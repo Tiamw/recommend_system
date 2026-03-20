@@ -1,0 +1,7 @@
+.packages/
+.venv/
+.tmp/
+training/data/
+training/artifacts/
+__pycache__/
+*.pyc

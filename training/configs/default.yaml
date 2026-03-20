@@ -1,0 +1,44 @@
+project:
+  name: mini-anime-rec
+  seed: 42
+
+paths:
+  archive_zip: archive.zip
+  raw_dir: training/data/raw
+  processed_dir: training/data/processed
+  artifacts_dir: training/artifacts
+  checkpoints_dir: training/artifacts/checkpoints
+  onnx_dir: training/artifacts/onnx
+  metrics_dir: training/artifacts/metrics
+  mappings_dir: training/artifacts/mappings
+  docs_dir: training/docs
+  examples_dir: training/examples
+
+data:
+  positive_rating_threshold: 7
+  fallback_rating_threshold: 6
+  min_user_interactions: 5
+  min_item_interactions: 5
+  max_seq_len: 50
+  sampled_eval_candidates: 100
+  popularity_top_k: 20
+
+training:
+  device: auto
+  batch_size: 128
+  eval_batch_size: 128
+  embedding_dim: 64
+  num_blocks: 2
+  num_heads: 2
+  dropout: 0.2
+  lr: 0.001
+  epochs: 20
+  early_stopping_patience: 3
+  weight_decay: 0.000001
+  num_negative_samples: 1
+
+export:
+  checkpoint_name: best_model.pt
+  onnx_name: model.onnx
+  opset_version: 17
+  top_k: 10

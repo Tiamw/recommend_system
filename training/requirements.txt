@@ -1,0 +1,10 @@
+numpy<2
+pandas
+scikit-learn
+pyyaml
+tqdm
+matplotlib
+pytest
+torch
+onnx
+onnxruntime
