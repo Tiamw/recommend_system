@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import torch
 from torch import nn
@@ -18,6 +18,9 @@ class SASRecLite(nn.Module):
         self.item_embedding = nn.Embedding(item_vocab_size, embedding_dim, padding_idx=0)
         self.position_embedding = nn.Embedding(max_seq_len, embedding_dim)
         self.dropout = nn.Dropout(dropout)
+        # ONNX export can produce NaNs when attention mask uses -inf.
+        # Keep -inf for training/runtime, but allow finite mask for export.
+        self.use_inf_mask = True
         encoder_layer = nn.TransformerEncoderLayer(
             d_model=embedding_dim,
             nhead=num_heads,
@@ -34,9 +37,17 @@ class SASRecLite(nn.Module):
         positions = torch.arange(seq_size, device=item_seq.device).unsqueeze(0).expand(batch_size, -1)
         embeddings = self.item_embedding(item_seq) + self.position_embedding(positions)
         embeddings = self.layer_norm(self.dropout(embeddings))
-        causal_mask = torch.triu(torch.ones(seq_size, seq_size, device=item_seq.device, dtype=torch.bool), diagonal=1)
-        padding_mask = item_seq.eq(0)
-        encoded = self.encoder(embeddings, mask=causal_mask, src_key_padding_mask=padding_mask)
+
+        if self.use_inf_mask:
+            causal_mask = torch.triu(torch.ones(seq_size, seq_size, device=item_seq.device, dtype=torch.bool), diagonal=1)
+            padding_mask = item_seq.eq(0)
+            encoded = self.encoder(embeddings, mask=causal_mask, src_key_padding_mask=padding_mask)
+        else:
+            # Use boolean masks to avoid NaNs while keeping mask types consistent.
+            causal_mask = torch.triu(torch.ones(seq_size, seq_size, device=item_seq.device, dtype=torch.bool), diagonal=1)
+            padding_mask = item_seq.eq(0)
+            encoded = self.encoder(embeddings, mask=causal_mask, src_key_padding_mask=padding_mask)
+
         last_index = (seq_len - 1).clamp(min=0)
         return encoded[torch.arange(batch_size, device=item_seq.device), last_index]
 

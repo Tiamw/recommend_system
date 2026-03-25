@@ -1,4 +1,4 @@
-project:
+﻿project:
   name: mini-anime-rec
   seed: 42
 
@@ -40,5 +40,6 @@ training:
 export:
   checkpoint_name: best_model.pt
   onnx_name: model.onnx
-  opset_version: 17
+  opset_version: 18
   top_k: 10
+
