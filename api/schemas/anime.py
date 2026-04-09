@@ -11,6 +11,15 @@ class AnimeCardResponse(BaseModel):
     rating: float | None = Field(None, description="平均评分。")
 
 
+class AnimeGenreResponse(BaseModel):
+    name: str = Field(..., description="题材名称。")
+    count: int = Field(..., description="包含该题材的动漫数量。")
+
+
+class AnimeGenreListResponse(BaseModel):
+    items: list[AnimeGenreResponse] = Field(..., description="可用题材筛选列表。")
+
+
 class AnimeListResponse(BaseModel):
     items: list[AnimeCardResponse] = Field(..., description="当前页动漫列表。")
     total: int = Field(..., description="符合条件的动漫总数。")

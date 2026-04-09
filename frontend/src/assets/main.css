@@ -132,3 +132,53 @@ textarea:focus, input:focus {
   .hero-grid, .auth-layout, .catalog-head, .hero-grid--wide { grid-template-columns: 1fr; }
   .profile-banner, .section-head { flex-direction: column; align-items: flex-start; }
 }
+
+
+.action-row--tight {
+  margin-top: 0;
+}
+
+.genre-panel {
+  margin-top: 1.5rem;
+  padding: 1.25rem 1.4rem;
+  border-radius: 24px;
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(16px);
+}
+
+.section-head--compact {
+  margin: 0 0 1rem;
+}
+
+.genre-chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.genre-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.7rem 1rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-main);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.genre-chip span {
+  color: var(--text-muted);
+  font-size: 0.82rem;
+}
+
+.genre-chip--active {
+  color: #13141a;
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-strong) 100%);
+}
+
+.genre-chip--active span {
+  color: #2b1c10;
+}

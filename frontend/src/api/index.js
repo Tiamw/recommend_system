@@ -12,6 +12,10 @@ export function fetchRecommendations(payload) {
   return api.post('/recommend', payload)
 }
 
+export function fetchAnimeGenres(params) {
+  return api.get('/anime/genres', { params })
+}
+
 export function fetchAnimeList(params) {
   return api.get('/anime', { params })
 }
